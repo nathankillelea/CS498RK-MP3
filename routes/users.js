@@ -1,3 +1,4 @@
+// https://www.youtube.com/watch?v=Eqhero22-Rg
 var secrets = require('../config/secrets');
 var User = require('../models/user.js');
 
@@ -5,21 +6,23 @@ module.exports = function (router) {
 
     var usersRoute = router.route('/users');
 
-    usersRoute.get(function(req, res) {
+    usersRoute.get(function(req, res) { // turn this into a promise shits down low
 		if(!req.query.count) {
-			User.find(eval("("+req.query.where+")")).sort(eval("("+req.query.sort+")")).select(eval("("+req.query.select+")")).skip(eval("("+req.query.skip+")")).limit(eval("("+req.query.limit+")")).exec(function(err, users) {
-				if(err)
-					return res.status(500).send({message: 'Server error', data: []});
-				else
-					return res.status(200).send({message: 'Users retrieved', data: users});
+			User.find(eval("("+req.query.where+")")).sort(eval("("+req.query.sort+")")).select(eval("("+req.query.select+")")).skip(eval("("+req.query.skip+")")).limit(eval("("+req.query.limit+")")).exec()
+			.then((users) => {
+				return res.status(200).send({message: 'Users retrieved', data: users});
+			})
+			.catch((err) => {
+				return res.status(500).send({message: 'Server error', data: []});
 			});
 		}
 		else {
-			User.count(eval("("+req.query.where+")")).exec(function(err, count) {
-				if(err)
-					return res.status(500).send({message: 'Server error', data: []});
-				else
-					return res.status(200).send({message: 'Count retrieved', data: count});
+			User.count(eval("("+req.query.where+")")).exec()
+			.then((count) => {
+				return res.status(200).send({message: 'Count retrieved', data: count});
+			})
+			.catch((err) => {
+				return res.status(500).send({message: 'Server error', data: []});
 			});
 		}
 	});
@@ -28,11 +31,22 @@ module.exports = function (router) {
 		newUser.name = req.body.name;
 		newUser.email = req.body.email;
 		newUser.pendingTasks = [];
-		newUser.save(function(err) {
-			if(err)
-				return res.status(500).send({message: 'Server error', data: []});
+		User.findOne({email: newUser.email}).exec() // query for duplicate email
+		.then((user) => {
+			if(user == null) { // if there is no user with this email, save
+				newUser.save()
+				.then(() => {
+					return res.status(201).send({message: 'New user created', data: newUser});
+				})
+				.catch((err) => {
+					return res.status(500).send({message: 'Server error', data: []});
+				});
+			}
 			else
-				return res.status(201).send({message: 'New user created', data: newUser});
+				return res.status(500).send({message: 'The entered email is already registered', data: []});
+ 		})
+		.catch((err) => {
+			return res.status(500).send({message: 'Server error', data: []});
 		});
 	});
 	usersRoute.options(function(req, res) {

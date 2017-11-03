@@ -5,6 +5,9 @@ var express = require('express'),
     secrets = require('./config/secrets'),
     bodyParser = require('body-parser');
 
+//  init promise library
+mongoose.Promise = global.Promise;
+
 // Create our Express application
 var app = express();
 

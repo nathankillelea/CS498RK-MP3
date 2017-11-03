@@ -7,19 +7,21 @@ module.exports = function (router) {
 
     tasksRoute.get(function(req, res) {
 		if(!req.query.count) {
-			Task.find(eval("("+req.query.where+")")).sort(eval("("+req.query.sort+")")).select(eval("("+req.query.select+")")).skip(eval("("+req.query.skip+")")).limit(eval("("+req.query.limit+")")).exec(function(err, tasks) {
-				if(err)
-					return res.status(500).send({message: 'Server error', data:[]});
-				else
-					return res.status(200).send({message: 'Tasks retrieved', data: tasks});
+			Task.find(eval("("+req.query.where+")")).sort(eval("("+req.query.sort+")")).select(eval("("+req.query.select+")")).skip(eval("("+req.query.skip+")")).limit(eval("("+req.query.limit+")")).exec()
+			.then((tasks) => {
+				return res.status(200).send({message: 'Tasks retrieved', data: tasks});
+			})
+			.catch((err) => {
+				return res.status(500).send({message: 'Server error', data:[]});
 			});
 		}
 		else {
-			Task.count(eval("("+req.query.where+")")).exec(function(err, count) {
-				if(err)
-					return res.status(500).send({message: 'Server error', data:[]});
-				else
-					return res.status(200).send({message: 'Count retrieved', data: count});
+			Task.count(eval("("+req.query.where+")")).exec()
+			.then((count) => {
+				return res.status(200).send({message: 'Count retrieved', data: count});
+			})
+			.catch((err) => {
+				return res.status(500).send({message: 'Server error', data:[]});
 			});
 		}
 	});
@@ -31,11 +33,12 @@ module.exports = function (router) {
 		newTask.completed = req.body.completed;
 		newTask.assignedUser = req.body.assignedUser;
 		newTask.assignedUserName = req.body.assignedUserName;
-		newTask.save(function(err) {
-			if(err)
-				return res.status(500).send({message: 'Server error', data:[]});
-			else
-				return res.status(201).send({message: 'New task created:', data: newTask});
+		newTask.save()
+		.then(() => {
+			return res.status(201).send({message: 'New task created:', data: newTask});
+		})
+		.catch((err) => {
+			return res.status(500).send({message: 'Server error', data:[]});
 		});
 	});
 	tasksRoute.options(function(req, res) {
