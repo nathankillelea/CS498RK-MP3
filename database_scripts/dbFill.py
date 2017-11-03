@@ -24,7 +24,7 @@ def usage():
 
 def getUsers(conn):
     # Retrieve the list of users
-    conn.request("GET","""/api/users?filter={"_id":1}""")
+    conn.request("GET","""/api/users?where={"_id":1}""") #where instead of filter
     response = conn.getresponse()
     data = response.read()
     d = json.loads(data)
@@ -84,7 +84,7 @@ def main(argv):
         x = randint(0,99)
         y = randint(0,99)
         params = urllib.urlencode({'name': firstNames[x] + " " + lastNames[y], 'email': firstNames[x] + "@" + lastNames[y] + ".com"})
-        
+
         # POST the user
         conn.request("POST", "/api/users", params, headers)
         response = conn.getresponse()

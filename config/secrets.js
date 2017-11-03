@@ -3,5 +3,5 @@
  */
 module.exports = {
     token : "secret-starter-mern",
-    mongo_connection : "YOUR URL TO MONGODB"
+    mongo_connection : "mongodb://bombo:1234@ds229295.mlab.com:29295/wadup-mp3" // your mongo url, do i change dbuser/password?
 };
