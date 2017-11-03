@@ -16,7 +16,7 @@ module.exports = function (router) {
 		});
 	});
 	tasksIdRoute.put(function(req, res) {
-		Task.findByIdAndUpdate(req.params.id, { $set: {name: req.body.name, email: req.body.email, pendingTasks: req.body.pendingTasks}}, function(err, task) {
+		Task.findByIdAndUpdate(req.params.id, { $set: {"name": req.body.name, "description": req.body.description, "deadline": req.body.deadline, "completed": req.body.completed, "assignedUser": req.body.assignedUser, "assignedUserName": req.body.assignedUserName}}, function(err, task) {
 			if(err) {
 				//do stuff
 			}

@@ -18,7 +18,7 @@ module.exports = function (router) {
 		});
 	});
 	usersIdRoute.put(function(req, res) {
-		User.findByIdAndUpdate(req.params.id, { $set: {name: req.body.name, email: req.body.email, pendingTasks: req.body.pendingTasks}}, function(err, user) {
+		User.findByIdAndUpdate(req.params.id, { $set: {"name": req.body.name, "email": req.body.email, "pendingTasks": req.body.pendingTasks}}, function(err, user) {
 			if(err) {
 				//do stuff
 			}
