@@ -6,25 +6,20 @@ module.exports = function (router) {
     var usersRoute = router.route('/users');
 
     usersRoute.get(function(req, res) {
-		// add queries
 		if(!req.query.count) {
 			User.find(eval("("+req.query.where+")")).sort(eval("("+req.query.sort+")")).select(eval("("+req.query.select+")")).skip(eval("("+req.query.skip+")")).limit(eval("("+req.query.limit+")")).exec(function(err, users) {
-				if(err) {
-					// do stuff
-				}
-				else {
-					return res.status(200).send({message: 'Here are the users:', data: users});
-				}
+				if(err)
+					return res.status(500).send({message: 'Server error', data: []});
+				else
+					return res.status(200).send({message: 'Users retrieved', data: users});
 			});
 		}
 		else {
 			User.count(eval("("+req.query.where+")")).exec(function(err, count) {
-				if(err) {
-					//do stuff
-				}
-				else {
-					return res.status(200).send({message: 'Here is the count:', data: count});
-				}
+				if(err)
+					return res.status(500).send({message: 'Server error', data: []});
+				else
+					return res.status(200).send({message: 'Count retrieved', data: count});
 			});
 		}
 	});
@@ -34,12 +29,10 @@ module.exports = function (router) {
 		newUser.email = req.body.email;
 		newUser.pendingTasks = [];
 		newUser.save(function(err) {
-			if(err) {
-				// do stuff
-			}
-			else {
-				return res.status(201).send({message: 'New Lad Created:', data: newUser});
-			}
+			if(err)
+				return res.status(500).send({message: 'Server error', data: []});
+			else
+				return res.status(201).send({message: 'New user created', data: newUser});
 		});
 	});
 	usersRoute.options(function(req, res) {
