@@ -18,13 +18,21 @@ module.exports = function (router) {
 		});
 	});
 	usersIdRoute.put(function(req, res) {
-		User.findByIdAndUpdate(req.params.id, { $set: {"name": req.body.name, "email": req.body.email, "pendingTasks": req.body.pendingTasks}}, function(err, user) {
-			if(err) {
-				//do stuff
-			}
-			else {
-				return res.status(200).send({message: 'User Put', data: user});
-			}
+		if(req.body.pendingTasks == "undefined")
+			req.body.pendingTasks = [];
+		User.findById(req.params.id, /*{ $set: {"name": req.body.name, "email": req.body.email, "pendingTasks": req.body.pendingTasks} }, */ function(err, user) {
+			if(!user)
+				return res.status(404).send({message: "Not Found", data:[]});
+			user.name = req.body.name;
+			user.email = req.body.email;
+			user.pendingTasks = req.body.pendingTasks;
+			user.save(function(err) {
+				if(err) {
+					// do stuff
+				}
+				else
+					return res.status(200).send({message: 'User Put', data: user});
+			});
 		});
 	});
 	usersIdRoute.delete(function(req, res) {
