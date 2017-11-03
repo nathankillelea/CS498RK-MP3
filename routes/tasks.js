@@ -8,23 +8,21 @@ module.exports = function (router) {
     tasksRoute.get(function(req, res) {
 		if(!req.query.count) {
 			Task.find(eval("("+req.query.where+")")).sort(eval("("+req.query.sort+")")).select(eval("("+req.query.select+")")).skip(eval("("+req.query.skip+")")).limit(eval("("+req.query.limit+")")).exec(function(err, tasks) {
-				if(err) { // probably not right errors
-					res.status(500);
-					res.json({message: 'Server Error'});
+				if(err) {
+					//do stuff
 				}
 				else {
-					res.json({message: 'Here are the tasks:', data: tasks});
+					return res.status(200).send({message: 'Here are the tasks:', data: tasks});
 				}
 			});
 		}
 		else {
 			Task.count(eval("("+req.query.where+")")).exec(function(err, count) {
-				if(err) { // probably not right errors
-					res.status(500);
-					res.json({message: 'Server Error'});
+				if(err) {
+					//do stuff
 				}
 				else {
-					res.json({message: 'Here is the count:', data: count});
+					return res.status(200).send({message: 'Here is the count:', data: count});
 				}
 			});
 		}
@@ -42,8 +40,7 @@ module.exports = function (router) {
 				// throw some errors
 			}
 			else {
-				res.status(201);
-				res.json({message: 'New Task Created:', data:newTask});
+				return res.status(201).send({message: 'New Task Created:', data:newTask});
 			}
 		});
 	});

@@ -5,4 +5,6 @@ module.exports = function (app, router) {
     app.use('/api', require('./home.js')(router));
 	app.use('/api', require('./users.js')(router));
 	app.use('/api', require('./tasks.js')(router));
+	app.use('/api', require('./usersId.js')(router));
+	app.use('/api', require('./tasksId.js')(router));
 };
