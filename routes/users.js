@@ -32,7 +32,7 @@ module.exports = function (router) {
 		var newUser = new User();
 		newUser.name = req.body.name;
 		newUser.email = req.body.email;
-		newUser.pendingTasks = req.body.pendingTasks;
+		newUser.pendingTasks = [];
 		newUser.save(function(err) {
 			if(err) {
 				// do stuff

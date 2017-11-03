@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var UserSchema = new mongoose.Schema({
     name: {type: String, required: true},
 	email: {type: String, required: true, unique: true},
-	pendingTasks: {type: [String], default: ["No tasks", "No tasks"]}, // ??? "pendingTasks" - [String] - The _id fields of the pending tasks that this user has ???
+	pendingTasks: [String], // ??? "pendingTasks" - [String] - The _id fields of the pending tasks that this user has ???
 	dateCreated: {type: Date, default: Date.now},
 }, {
 	versionKey: false,
