@@ -7,6 +7,8 @@ module.exports = function (router) {
 
     tasksIdRoute.get(function(req, res) {
 		Task.findById(req.params.id, function(err, task) {
+			if(!task)
+				return res.status(404).send({message: 'not FOUND', data:[]});
 			if(err) {
 				//do stuff
 			}
@@ -17,6 +19,8 @@ module.exports = function (router) {
 	});
 	tasksIdRoute.put(function(req, res) {
 		Task.findById(req.params.id, /*{ $set: {"name": req.body.name, "description": req.body.description, "deadline": req.body.deadline, "completed": req.body.completed, "assignedUser": req.body.assignedUser, "assignedUserName": req.body.assignedUserName} },*/ function(err, task) {
+			if(!task)
+				return res.status(404).send({message: 'not FOUND', data:[]});
 			task.name = req.body.name;
 			task.description = req.body.description;
 			task.deadline = req.body.deadline;
@@ -33,7 +37,9 @@ module.exports = function (router) {
 		});
 	});
 	tasksIdRoute.delete(function(req, res) {
-		Task.findByIdAndRemove(req.params.id, function(err) {
+		Task.findByIdAndRemove(req.params.id, function(err, task) {
+			if(!task)
+				return res.status(404).send({message: 'not FOUND', data:[]});
 			if(err) {
 				//do stuff
 			}

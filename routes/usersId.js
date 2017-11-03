@@ -9,6 +9,8 @@ module.exports = function (router) {
 
     usersIdRoute.get(function(req, res) {
 		User.findById(req.params.id, function(err, user) {
+			if(!user)
+				return res.status(404).send({message: 'not FOUND', data:[]});			
 			if(err) {
 				//do stuff
 			}
@@ -36,7 +38,9 @@ module.exports = function (router) {
 		});
 	});
 	usersIdRoute.delete(function(req, res) {
-		User.findByIdAndRemove(req.params.id, function(err) {
+		User.findByIdAndRemove(req.params.id, function(err, user) {
+			if(!user)
+				return res.status(404).send({message: 'not FOUND', data:[]});
 			if(err) {
 				//do stuff
 			}
