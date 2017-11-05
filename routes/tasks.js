@@ -41,10 +41,6 @@ module.exports = function (router) {
 			return res.status(500).send({message: 'Server error', data:[]});
 		});
 	});
-	tasksRoute.options(function(req, res) {
-		res.writeHead(200);
-		res.end();
-	});
 
     return router;
 }

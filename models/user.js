@@ -1,3 +1,5 @@
+// http://mongoosejs.com/docs/guide.html
+
 // Load required packages
 var mongoose = require('mongoose');
 
@@ -5,7 +7,7 @@ var mongoose = require('mongoose');
 var UserSchema = new mongoose.Schema({
     name: {type: String, required: true},
 	email: {type: String, required: true, unique: true},
-	pendingTasks: [String], // ??? "pendingTasks" - [String] - The _id fields of the pending tasks that this user has ???
+	pendingTasks: [String],
 	dateCreated: {type: Date, default: Date.now},
 }, {
 	versionKey: false,

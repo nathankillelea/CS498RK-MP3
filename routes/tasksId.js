@@ -17,7 +17,7 @@ module.exports = function (router) {
 			return res.status(500).send({message: 'Server error', data:[]});
 		});
 	});
-	tasksIdRoute.put(function(req, res) {
+	tasksIdRoute.put(function(req, res) { // change find and save to just update?
 		Task.findById(req.params.id).exec()
 		.then((task) => {
 			if(task == null)
@@ -47,8 +47,9 @@ module.exports = function (router) {
 		.then((task) => {
 			if(task == null)
 				return res.status(404).send({message: 'Task not found', data:[]});
-			else
+			else {
 				return res.status(200).send({message: 'Task deleted', data: []});
+			}
 		})
 		.catch((err) => {
 			return res.status(500).send({message: 'Server error', data:[]});

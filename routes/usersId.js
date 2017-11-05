@@ -1,4 +1,4 @@
-//http://mongoosejs.com/docs/documents.html
+// http://mongoosejs.com/docs/documents.html
 
 var secrets = require('../config/secrets');
 var User = require('../models/user.js');
@@ -19,7 +19,7 @@ module.exports = function (router) {
 			return res.status(500).send({message: 'Server error', data:[]});
 		});
 	});
-	usersIdRoute.put(function(req, res) {
+	usersIdRoute.put(function(req, res) { // change find and save to just update?
 		User.findById(req.params.id).exec()
 		.then((user) => {
 			if(user == null)
@@ -49,8 +49,9 @@ module.exports = function (router) {
 		.then((user) => {
 			if(user == null)
 				return res.status(404).send({message: 'User not found', data:[]});
-			else
+			else {
 				return res.status(200).send({message: 'User deleted', data: []});
+			}
 		})
 		.catch((err) => {
 			return res.status(500).send({message: 'Server error', data:[]});

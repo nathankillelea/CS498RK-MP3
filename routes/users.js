@@ -1,4 +1,9 @@
 // https://www.youtube.com/watch?v=Eqhero22-Rg
+// https://expressjs.com/en/guide/routing.html
+// http://mongoosejs.com/docs/promises.html
+// http://mongoosejs.com/docs/queries.html
+// https://www.npmjs.com/package/mongoose
+
 var secrets = require('../config/secrets');
 var User = require('../models/user.js');
 
@@ -6,7 +11,7 @@ module.exports = function (router) {
 
     var usersRoute = router.route('/users');
 
-    usersRoute.get(function(req, res) { // turn this into a promise shits down low
+    usersRoute.get(function(req, res) {
 		if(!req.query.count) {
 			User.find(eval("("+req.query.where+")")).sort(eval("("+req.query.sort+")")).select(eval("("+req.query.select+")")).skip(eval("("+req.query.skip+")")).limit(eval("("+req.query.limit+")")).exec()
 			.then((users) => {
@@ -26,7 +31,7 @@ module.exports = function (router) {
 			});
 		}
 	});
-	usersRoute.post(function(req, res) { // MAYBE ADD SOME CHECKING TO SEE IF NAME IS SAME OR EMAIL IS SAME???
+	usersRoute.post(function(req, res) {
 		var newUser = new User();
 		newUser.name = req.body.name;
 		newUser.email = req.body.email;
@@ -48,10 +53,6 @@ module.exports = function (router) {
 		.catch((err) => {
 			return res.status(500).send({message: 'Server error', data: []});
 		});
-	});
-	usersRoute.options(function(req, res) {
-		res.writeHead(200); // changes it to success
-		res.end();
 	});
 
     return router;
