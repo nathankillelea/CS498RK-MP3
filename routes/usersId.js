@@ -54,7 +54,7 @@ module.exports = function (router) {
 			}
 		})
 		.catch((err) => {
-			return res.status(404).send({message: 'User not found', data:[]});
+			return res.status(500).send({message: 'User not found', data:[]});
 		});
 	});
 
