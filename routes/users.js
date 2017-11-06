@@ -22,7 +22,7 @@ module.exports = function (router) {
 			});
 		}
 		else {
-			User.count(eval("("+req.query.where+")")).exec()
+			User.count(eval("("+req.query.count+")")).exec()
 			.then((count) => {
 				return res.status(200).send({message: 'Count retrieved', data: count});
 			})

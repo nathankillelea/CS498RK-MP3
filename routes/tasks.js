@@ -16,7 +16,7 @@ module.exports = function (router) {
 			});
 		}
 		else {
-			Task.count(eval("("+req.query.where+")")).exec()
+			Task.count(eval("("+req.query.count+")")).exec()
 			.then((count) => {
 				return res.status(200).send({message: 'Count retrieved', data: count});
 			})
