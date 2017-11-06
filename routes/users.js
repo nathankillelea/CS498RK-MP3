@@ -35,7 +35,10 @@ module.exports = function (router) {
 		var newUser = new User();
 		newUser.name = req.body.name;
 		newUser.email = req.body.email;
-		newUser.pendingTasks = [];
+		if(req.body.pendingTasks == "undefined")
+			newUser.pendingTasks = [];
+		else
+			newUser.pendingTasks = req.body.pendingTasks;
 		User.findOne({email: newUser.email}).exec() // query for duplicate email
 		.then((user) => {
 			if(user == null) { // if there is no user with this email, save
